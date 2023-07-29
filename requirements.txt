@@ -1,0 +1,8 @@
+poetry
+garmin-fit-sdk
+fit-tool
+fastapi
+uvicorn
+pytest
+pytest-cov
+redis
