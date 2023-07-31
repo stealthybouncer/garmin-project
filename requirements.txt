@@ -1,6 +1,17 @@
 poetry
 garmin-fit-sdk
 fit-tool
+numpy
+pandas
+matplotlib
+mapclassify
+fiona
+pyproj
+rtree
+geopy
+geoalchemy2
+shapely
+geopandas
 fastapi
 uvicorn
 pytest
