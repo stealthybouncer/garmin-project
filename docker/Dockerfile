@@ -9,9 +9,9 @@ RUN chown -R lclusr:lclusr ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 COPY pyproject.toml ${APP_DIR}/
-RUN poetry env use 3.11 && \
-    poetry config virutalenvs.path ${APP_DIR}/virutalenvs && \
-    poetry config virutalenvs.in-project true && \
+RUN poetry env use 3.11 &&\
+    poetry config virutalenvs.path ${APP_DIR}/virutalenvs &&\
+    poetry config virutalenvs.in-project true &&\
     poetry install
 
 ENV PYTHONPATH ${APP_DIR}
