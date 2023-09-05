@@ -1,6 +1,7 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
+from pandas import DataFrame
 import fitparse
 import cartopy.crs as ccrs
 import cartopy.io.img_tiles as cimgt
@@ -9,23 +10,52 @@ from fit_tool.fit_file import FitFile
 from fit_tool.profile.messages.record_message import RecordMessage
 
 
+FILE_LIST = [
+    'vulcanraven862_138103748459.fit',
+    'vulcanraven862_138103749120.fit',
+    'vulcanraven862_138104825005.fit',
+    'vulcanraven862_138104825722.fit',
+    'vulcanraven862_138104826049.fit',
+    'vulcanraven862_138104827017.fit',
+    'vulcanraven862_138171633574.fit',
+    'vulcanraven862_138171633879.fit',
+    'vulcanraven862_138171635729.fit',
+    'vulcanraven862_138688209234.fit',
+    'vulcanraven862_138688405981.fit',
+
+    'vulcanraven862_138688416368.fit',
+    'vulcanraven862_138688436252.fit',
+    'vulcanraven862_138688574890.fit',
+    'vulcanraven862_138688696297.fit',
+    'vulcanraven862_138688702658.fit',
+    'vulcanraven862_138688723619.fit',
+    'vulcanraven862_138688743022.fit',
+    'vulcanraven862_138688762875.fit',
+    'vulcanraven862_138688773661.fit',
+    'vulcanraven862_138688774054.fit',
+    'vulcanraven862_138688774393.fit',
+    'vulcanraven862_138688774722.fit',
+]
+
+
 DATA_PATH='/data/UploadedFiles_0-_Part2'
-OUT_PATH = f'{DATA_PATH}/vulcanraven862_138688405981.csv'
-PNG_PATH = f'{DATA_PATH}/vulcanraven862_138688405981.png'
-FIT_FILE = FitFile.from_file(f'{DATA_PATH}/vulcanraven862_138688405981.fit')
+IMAGE_PATH='/data/output-files'
+OUT_PATH = f'{IMAGE_PATH}/vulcanraven862_138688405981.csv'
+PNG_PATH = f'{IMAGE_PATH}/vulcanraven862_138688405981.png'
+FIT_FILE_LIST = [FitFile.from_file(f'{DATA_PATH}/{filename}') for filename in FILE_LIST]
 
 
 def main():
     # play_with_mplot()
     # play_with_cartopy()
-    fit_file_positions = get_fit_file_positions_and_altitude(FIT_FILE)
-    positions_df = pd.DataFrame(fit_file_positions, columns=['longitude', 'latitude'])
+    positions_df = collect_fit_files_to_dataframe(FIT_FILE_LIST)
 
     central_longitude = positions_df['longitude'].mean()
     central_latitude = positions_df['latitude'].mean()
     
     # Create a map using the Lambert Conformal Conic projection
-    projection = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude)
+    # projection = ccrs.LambertConformal(central_longitude=central_longitude, central_latitude=central_latitude)
+    projection = ccrs.TransverseMercator(central_longitude=central_longitude, central_latitude=central_latitude, scale_factor=0.05)
     fig, ax = plt.subplots(subplot_kw={'projection': projection})
 
     delta = 0.1
@@ -40,39 +70,37 @@ def main():
     
     # Use tiles from ArcGIS
     tiler = cimgt.GoogleTiles(style='satellite')
-    ax.add_image(tiler, 10)  # The integer value (8) defines the zoom level
+    ax.add_image(tiler, 22)  # The integer value (8) defines the zoom level
 
+    fit_file_positions = [(row['longitude'], row['latitude']) for _, row in positions_df.iterrows()]
     # Plot the segment of the Colorado River
     ax.plot([p[0] for p in fit_file_positions], [p[1] for p in fit_file_positions], '-o', color='blue', linewidth=3, transform=ccrs.PlateCarree())
 
-    # Plot the hike into Havasu Creek
-    # ax.scatter(lon_hike, lat_hike, color='red', s=100, transform=ccrs.PlateCarree(), label="Hike to Havasu Creek")
     ax.legend(loc="upper left")
 
     # Display the map
-    plt.title("stealthybouncer grabassing in UTAH!!")
+    plt.title("stealthybouncer's adventures in UTAH!!")
     # plt.show()
     plt.savefig(PNG_PATH)
 
-    # plt.figure()
-    # plt.plot([p[0] for p in fit_file_positions], [p[1] for p in fit_file_positions], '-o')
-    # plt.xlabel('longitude')
-    # plt.ylabel('latitude')
-    # # overlay onto a map
-    # # https://stackoverflow.com/questions/36008648/plot-data-on-top-of-a-map-using-python
-
-    # plt.savefig(PNG_PATH)
 
 
+def collect_fit_files_to_dataframe(fit_file_list: list
+) -> DataFrame:
 
-def get_fit_file_positions_and_altitude(file_path) -> list:
+    full_trip = [positions for fit_file in fit_file_list for positions in get_fit_file_positions_and_altitude(fit_file)]
+
+    return pd.DataFrame(full_trip, columns=['timestamp', 'longitude', 'latitude']).sort_values(by='timestamp')
+
+
+def get_fit_file_positions_and_altitude(fit_file) -> list:
     # Load the FIT file
     positions = []
 
-    for record in FIT_FILE.records:
+    for record in fit_file.records:
         message = record.message
         if isinstance(message, RecordMessage):
-            positions.append((message.position_long, message.position_lat))
+            positions.append((message.timestamp, message.position_long, message.position_lat))
 
     return positions
 
@@ -113,7 +141,7 @@ def play_with_mplot():
 
     print('Start file read')
     
-    FIT_FILE.to_csv(OUT_PATH)
+    FIT_FILE_LIST.to_csv(OUT_PATH)
 
     timestamp1 = []
     power1 = []
@@ -121,7 +149,7 @@ def play_with_mplot():
     speed1 = []
     cadence1 = []
     positions = []
-    for record in FIT_FILE.records:
+    for record in FIT_FILE_LIST.records:
         message = record.message
         if isinstance(message, RecordMessage):
             timestamp1.append(message.timestamp)
