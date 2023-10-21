@@ -1,7 +1,9 @@
-version: '2'
+version: '3.8'
 services:
   app:
       image: garmin-proj-app:latest
+      env_file:
+        - "V:/configs/garmin/.env"
       build: .
       container_name: garmin-project
       command: uvicorn src.main:app -host 0.0.0.0.0 -port 80 --reload

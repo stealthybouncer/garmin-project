@@ -1,3 +1,5 @@
+import os
+import gmaps
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -10,7 +12,9 @@ from fit_tool.fit_file import FitFile
 from fit_tool.profile.messages.record_message import RecordMessage
 
 
-FILE_LIST = [
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_PLATFORM_API_KEY')
+
+FILE_LIST_PART1 = [
     'vulcanraven862_138103748459.fit',
     'vulcanraven862_138103749120.fit',
     'vulcanraven862_138104825005.fit',
@@ -37,8 +41,13 @@ FILE_LIST = [
     'vulcanraven862_138688774722.fit',
 ]
 
+FILE_LIST = [
+    'vulcanraven862_214716667952.fit',
+]
 
-DATA_PATH='/data/UploadedFiles_0-_Part2'
+
+#DATA_PATH='/data/UploadedFiles_0-_Part2'
+DATA_PATH='/data/UploadedFiles_0-_Part3'
 IMAGE_PATH='/data/output-files'
 OUT_PATH = f'{IMAGE_PATH}/vulcanraven862_138688405981.csv'
 PNG_PATH = f'{IMAGE_PATH}/vulcanraven862_138688405981.png'
@@ -46,8 +55,30 @@ FIT_FILE_LIST = [FitFile.from_file(f'{DATA_PATH}/{filename}') for filename in FI
 
 
 def main():
-    # play_with_mplot()
-    # play_with_cartopy()
+    play_with_cartopy()
+
+
+def main2():
+    positions_df = collect_fit_files_to_dataframe(FIT_FILE_LIST)
+
+    central_longitude = positions_df['longitude'].mean()
+    central_latitude = positions_df['latitude'].mean()
+    
+    gmaps.configure(api_key=GOOGLE_MAPS_API_KEY)
+
+    fig = gmaps.figure(
+        center=(central_latitude, central_longitude),
+        zoom_level=5,
+    )
+
+    layer = gmaps.marker_layer(positions_df[['latitude', 'longitude']])
+    fig.add_layer(layer)
+
+    plt.savefig(PNG_PATH)
+
+
+
+def play_with_cartopy():
     positions_df = collect_fit_files_to_dataframe(FIT_FILE_LIST)
 
     central_longitude = positions_df['longitude'].mean()
@@ -70,7 +101,7 @@ def main():
     
     # Use tiles from ArcGIS
     tiler = cimgt.GoogleTiles(style='satellite')
-    ax.add_image(tiler, 22)  # The integer value (8) defines the zoom level
+    ax.add_image(tiler, 10)  # The integer value (8) defines the zoom level
 
     fit_file_positions = [(row['longitude'], row['latitude']) for _, row in positions_df.iterrows()]
     # Plot the segment of the Colorado River
@@ -105,7 +136,7 @@ def get_fit_file_positions_and_altitude(fit_file) -> list:
     return positions
 
 
-def play_with_cartopy():
+def play_with_cartopy1():
     # Approximate coordinates for a segment of the Colorado River through the Grand Canyon
     lats_river = [36.1, 36.0, 35.9, 35.8]
     lons_river = [-112.1, -112.2, -112.3, -112.4]
