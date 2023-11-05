@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./src/fit_file_reader",
+        "./garmin_reader_app/src/fit_file_reader"
+    ]
+}
