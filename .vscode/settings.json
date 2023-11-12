@@ -1,6 +1,8 @@
+/**
+ * This file contains the settings for the Visual Studio Code workspace located at /v:/github-repos/garmin-project.
+ */
 {
     "python.analysis.extraPaths": [
-        "./src/fit_file_reader",
-        "./garmin_reader_app/src/fit_file_reader"
+        "./garmin_reader_app/src/data_processing"
     ]
 }

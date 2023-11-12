@@ -8,6 +8,14 @@ services:
     # array). The sample below assumes your primary file is in the root of your project.
     #
     # build:
+    # FILEPATH: /v:/github-repos/garmin-project/.devcontainer/docker-compose.yml
+
+    # This docker-compose file is used to specify the context for the Docker build.
+    # The context is set to the current directory (".") by default.
+    # Uncomment the "context" line and specify a different context if needed.
+    version: '3.8'
+    services:
+      # ...
     #   context: .
     #   dockerfile: .devcontainer/Dockerfile
 

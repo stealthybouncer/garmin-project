@@ -2,6 +2,7 @@ project to manipulate data gathered by Garmin products
 
 Coding Assistant(s)
  - GitHub Copilot
+ - ChatGPT3.5
 
 
 References

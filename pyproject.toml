@@ -1,9 +1,13 @@
+# FILEPATH: /v:/github-repos/garmin-project/pyproject.toml
+
+# Project metadata
 [tool.poetry]
 name = "garmin-project"
 description = "A project to analyze Garmin devices' data capture"
 version = "0.0.1"
 author = "Francis Rodrigues"
 
+# Project dependencies
 [tool.poetry.dependencies]
 python = "^3.11"
 garmin-fit-sdk = "^21.10.00"
@@ -29,17 +33,20 @@ redis = "^3.5.3"
 jupyter = "^1.0.0"
 gmaps = "^0.9.0"
 
+# Build system configuration
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+# Code formatting configuration
 [tool.black]
-line-length = 140
+line-length = 240
 target-version = ["py311"]
 
+# Pylint configuration
 [tool.pylint.messages_control]
 extension-pkg-whitelist = "pydantic"
-max-line-length = 140
+max-line-length = 240
 disable = [
     "invalid-name",
     "duplicate-code",
