@@ -1,0 +1,42 @@
+# FILEPATH: /v:/github-repos/garmin-project/docker-compose.yml
+
+# Define the version of Docker Compose to use
+version: '3.8'
+
+# Define the services that make up the application
+services:
+  # Define the app service
+  app:
+      # Use the latest version of the garmin-proj-app image
+      image: garmin-proj-app:latest
+      
+      # Load environment variables from the specified file
+      env_file:
+        - "V:/configs/garmin/.env"
+      
+      # Build the image from the Dockerfile in the current directory
+      build: .
+      
+      # Set the name of the container to garmin-project
+      container_name: garmin-project
+      
+      # Start the app using uvicorn with the specified parameters
+      command: uvicorn src.main:app -host 0.0.0.0.0 -port 80 --reload
+      
+      # Map port 80 on the host to port 80 in the container
+      ports: 
+        - 80:80
+      
+      # Mount the current directory and the specified directory as volumes in the container
+      volumes: 
+        - .:/code
+        - "V:/data/garmin-uploaded-files:/data"
+      
+      # Depend on the redis service
+      depends_on:
+        - redis
+
+  # Define the redis service
+  redis: 
+      # Use the redis:alpine image
+      image: redis:alpine

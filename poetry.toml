@@ -1,0 +1,11 @@
+/**
+ * This configuration file is used by Poetry, a Python dependency management tool.
+ * 
+ * The [virtualenvs] section specifies the settings for virtual environments.
+ * 
+ * - create: If set to true, Poetry will create a new virtual environment if one doesn't exist.
+ * - in-project: If set to true, Poetry will create the virtual environment inside the project directory.
+ */
+[virtualenvs]
+create = true
+in-project = true
