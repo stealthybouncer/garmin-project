@@ -2,10 +2,10 @@
 FROM python:3.11.9-slim
 
 # Set the working directory in the container
-WORKDIR /src/app
+WORKDIR V:/github-repos/garmin-project/
 
 # Copy the requirements file from your host to the current location in the container
-COPY V:/github-repos/garmin-project/requirements.txt ./
+COPY requirements.txt ./
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
