@@ -1,0 +1,19 @@
+{
+    "name": "Existing Docker Compose (Extend)",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "garmin_project",
+    "workspaceFolder": "/workspaces/garmin_project/",
+    "forwardPorts": [80, 443, 5000],
+    "runServices": ["garmin-project"],
+    "shutdownAction": "none",
+    "postCreateCommand": "echo 'Garmin App Container created!'",
+    "customizations": {
+        // "someTool": {
+        //     "property1": "value1",
+        //     "property2": "value2"
+        // }
+    },
+    "remoteUser": "stealthybouncer"
+}

@@ -1,11 +1,19 @@
+poetry
+garmin-fit-sdk
+fit-tool
+numpy
+pandas
+matplotlib
+mapclassify
+fiona
 # Use an official Python runtime as a parent image
-FROM python:3.11.9-slim
+FROM python:3.9
 
 # Set the working directory in the container
-WORKDIR /src/app
+WORKDIR /usr/src/app
 
 # Copy the requirements file from your host to the current location in the container
-COPY V:/github-repos/garmin-project/requirements.txt ./
+COPY V:/github-repos/garmin-project/old_code/requirements.txt ./
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
@@ -20,4 +28,16 @@ EXPOSE 80
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["python", "app.py"]
+CMD ["python", "app.py"]pyproj
+rtree
+geopy
+geoalchemy2
+shapely
+geopandas
+fastapi
+uvicorn
+pytest
+pytest-cov
+redis
+fitparse
+jinja2

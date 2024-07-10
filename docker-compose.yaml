@@ -1,0 +1,17 @@
+version: '3.11.9'
+services:
+  garmin-project:
+    build:
+      context: .  # Docker context, "." means current directory
+      dockerfile: Dockerfile  # Path to Dockerfile, if not in the context root
+    ports:
+      - "8090:8090"  # Map port 8090 of the container to port 8090 on the host
+    volumes:
+      - V:\github-repos\garmin-project:/app  # Mount the current directory to /app in the container
+      - V:\data:/data
+      - V:\configs\garmin:/configs
+    env_file:
+      - V:\configs\garmin\.env
+    # environment:
+      # - SOME_ENV_VAR=value  # Environment variables, if needed
+        

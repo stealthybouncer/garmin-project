@@ -3,6 +3,7 @@
  */
 {
     "python.analysis.extraPaths": [
-        "./garmin_reader_app/src/data_processing"
-    ]
+        "./garmin_reader_app/src"
+    ],
+    "workbench.editor.alwaysShowEditorActions": true
 }
